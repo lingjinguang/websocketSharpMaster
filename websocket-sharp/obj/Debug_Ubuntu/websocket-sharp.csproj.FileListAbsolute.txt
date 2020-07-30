@@ -1,0 +1,5 @@
+C:\Users\JG\Downloads\websocket-sharp-master\websocket-sharp\bin\Debug_Ubuntu\websocket-sharp.dll
+C:\Users\JG\Downloads\websocket-sharp-master\websocket-sharp\bin\Debug_Ubuntu\websocket-sharp.pdb
+C:\Users\JG\Downloads\websocket-sharp-master\websocket-sharp\obj\Debug_Ubuntu\ResolveAssemblyReference.cache
+C:\Users\JG\Downloads\websocket-sharp-master\websocket-sharp\obj\Debug_Ubuntu\websocket-sharp.dll
+C:\Users\JG\Downloads\websocket-sharp-master\websocket-sharp\obj\Debug_Ubuntu\websocket-sharp.pdb

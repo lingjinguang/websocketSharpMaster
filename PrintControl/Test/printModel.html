@@ -1,0 +1,185 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Print</title>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <style>
+        button {
+            width: 100px;
+            height: 100px;
+            background: #00cccc;
+            border: none;
+            outline: none;
+            color: #000;
+            font-size: 10pt;
+            font-weight: 600;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        #lable1 {
+            font-size: 20px;
+        }
+
+        button:hover {
+            background: #00cccc;
+        }
+
+        body {
+            word-break: break-all;
+            margin: 0 1em;
+            min-height: 100vh;
+            font-family: Consolas, "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", Monaco, "Courier New", monospace;
+            overflow: hidden;
+        }
+
+        .empty::before {
+            position: absolute;
+            font-size: 50px;
+            content: '将模板数据\A拖到这里';
+            white-space: pre;
+            left: 60%;
+            top: 20%;
+            transform: translate(-50%,-50%);
+            color: gray;
+        }
+        .item-title,.item-content 
+        {
+        	border: 1px solid #000;
+        }
+    </style>
+    <script>
+
+        window.addEventListener("dragenter", function (event) { event.preventDefault(); }, false);
+        window.addEventListener("dragover", function (event) { event.preventDefault(); }, false);
+        window.addEventListener("drop", function (event) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var strs = new Array(); 
+                strs = e.target.result.split(",");
+                $('#temp').val(strs[1]);
+            };
+            reader.readAsDataURL(event.dataTransfer.files[0]);
+            event.preventDefault();
+        }, false);
+
+        var ws;
+        $(function () {
+            var sendData = {
+                event_type: "scanning",
+                data: {
+                    operate: "open"
+                }
+            };
+            $("#uriForm").submit(function () {
+                log("准备连接到" + $("#uri").val());
+                ws = new WebSocket($("#uri").val());
+                //连接成功建立后响应
+                ws.onopen = function () {
+                    log("成功连接到" + $("#uri").val());
+                }
+                //收到服务器消息后响应
+                ws.onmessage = function (event) {
+                    log("收到服务器消息:"+event.data);
+                    var ret = JSON.parse(event.data);
+                    if (ret.code != 0)
+                        log("异常：" + ret.msg);
+                    else
+                        log("打印成功，后续需要回调打印成功接口");
+                }
+                //连接关闭后响应
+                ws.onclose = function () {
+                    log("关闭连接");
+                    $("#disconnect").attr({ "disabled": "disabled" });
+                    $("#uri").removeAttr("disabled");
+                    $("#connect").removeAttr("disabled");
+                    ws = null;
+                }
+                $("#uri").attr({ "disabled": "disabled" });
+                $("#connect").attr({ "disabled": "disabled" });
+                $("#disconnect").removeAttr("disabled");
+                return false;
+            });
+        })
+
+        //在消息框中打印内容
+        function log(text) {
+            $("#log").append(text + "\n");
+        }
+
+        function isString(str) {
+            return (typeof str == 'string') && str.constructor == String;
+        }
+
+        //发送字符串消息
+        $(function () {
+
+            $("#disconnect").click(function () {
+                if (ws) {
+                    $("#log").empty();
+                    ws.close();
+                    ws = null;
+                }
+                return false;
+            });
+
+            $("#reset").click(function () {
+                $("#log").empty();
+                return false;
+            });
+            $("#printHtml").click(function () {
+                var html = $("html").html();
+//                console.log(html);
+                /*
+                */
+                if (!ws || ws.readyState !== 1) {
+                    alert('请先连接服务');
+                    return false;
+                }
+                var url = $('#pdfUrl').val();
+                var data = innerHtml;
+                var sendData = {
+                    file_type: "html",
+                    print_type: "data",
+                    event_type: "print",
+                    data: data
+                };
+                
+                var urlArr = [html];
+                //发送数据
+                //测试打印多张图片
+                for(var i = 0; i < 1; i++){
+                    for(var j = 0; j < urlArr.length; j++){
+                        sendData.data = urlArr[j]; 
+                        ws.send(JSON.stringify(sendData));
+                    }
+                }
+            });
+            
+            
+        });
+
+
+    
+    </script>
+</head>
+
+<body>
+    <div>
+        <input type="button" id="printHtml" value="打印PDF(Html)">
+    
+    </div>
+    <div class="introBox section package boxBg02" id="yhtcprediv">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table-grid table-text-grid">
+            <tr><td colspan="11" class="item-content-title" style="padding-top: 10px;padding-bottom: 10px;">检查护送单</td></tr>
+            <tr><td  class="item-title" style="border: 1px solid #000;">年龄</td><td  class="item-title" style="border: 1px solid #000;">机房</td><td  class="item-title" style="border: 1px solid #000;">出生日期</td><td  class="item-title" style="border: 1px solid #000;">预约时间</td><td  class="item-title" style="border: 1px solid #000;">排队号</td></tr>
+            <tr><td class="item-content" style="border: 1px solid #000;">岁</td><td class="item-content" style="border: 1px solid #000;">普通彩超</td><td class="item-content" style="border: 1px solid #000;"></td><td class="item-content" style="border: 1px solid #000;">09:00-09:30</td><td class="item-content" style="border: 1px solid #000;">36</td></tr>
+            <tr><td class="item-content" style="border: 1px solid #000;">岁</td><td class="item-content" style="border: 1px solid #000;">B超机房</td><td class="item-content" style="border: 1px solid #000;"></td><td class="item-content" style="border: 1px solid #000;">09:00-09:30</td><td class="item-content" style="border: 1px solid #000;">12</td></tr>
+            <tr><td class="item-content" style="border: 1px solid #000;">岁</td><td class="item-content" style="border: 1px solid #000;">B超机房</td><td class="item-content" style="border: 1px solid #000;"></td><td class="item-content" style="border: 1px solid #000;">10:00-10:30</td><td class="item-content" style="border: 1px solid #000;">28</td></tr>
+        </table>
+    </div>
+    <br>
+</body>
+</html>

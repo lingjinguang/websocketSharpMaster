@@ -1,0 +1,1054 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TomTaw.IMCIS.Utility</name>
+    </assembly>
+    <members>
+        <member name="T:TomTaw.IMCIS.Utility.SecureWebClient">
+            <summary>
+            支持安装连接TLS的WebClient
+            </summary>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.SecureWebClient.GetWebRequest(System.Uri)">
+            <summary>
+            获取WebRequest
+            </summary>
+            <param name="address">地址</param>
+            <returns>WebRequest</returns>
+        </member>
+        <member name="P:TomTaw.IMCIS.Utility.SecureWebClient.X509Certificate">
+            <summary>
+            证书
+            </summary>
+        </member>
+        <member name="T:TomTaw.IMCIS.Utility.CompressHelper">
+            <summary>
+            压缩解压类
+            </summary>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.CompressHelper.Decompression(System.String,System.String)">
+            <summary>
+            将指定压缩文件解压到指定目录，采用ExtractFullPath、Overwrite
+            </summary>
+            <param name="filePath">压缩文件路径</param>
+            <param name="destinationDirectory">解压目标</param>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.CompressHelper.Decompression(System.IO.Stream,System.String)">
+            <summary>
+            将压缩包文件流解压到指定目录，采用ExtractFullPath、Overwrite
+            </summary>
+            <param name="fileStream">压缩包文件流</param>
+            <param name="destinationDirectory">解压目标</param>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.CompressHelper.Compression(System.String,System.String,System.Int32)">
+            <summary>
+            将指定文件压缩到指定文件
+            </summary>
+            <param name="sourceFilePath">源文件路径</param>
+            <param name="destinationFilePath">压缩文件保存路径</param>
+            <param name="compressionLevel">压缩级别，0-9之间的数字，0不压缩，9最大压缩，数字越大压缩比越大，速度越慢</param>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.CompressHelper.Compression(System.String,System.Int32)">
+            <summary>
+            将指定文件压缩，并返回Stream
+            </summary>
+            <param name="sourceFilePath">源文件路径</param>
+            <param name="compressionLevel">压缩级别，0-9之间的数字，0不压缩，9最大压缩，数字越大压缩比越大，速度越慢</param>        
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.CompressHelper.Compression(System.IO.Stream,System.Int32,System.String)">
+            <summary>
+            指定输入的Stream压缩，并返回Stream
+            </summary>
+            <param name="sourceStream">源Stream</param>
+            <param name="compressionLevel">压缩级别，0-9之间的数字，0不压缩，9最大压缩，数字越大压缩比越大，速度越慢</param>
+            <param name="entryName">指定压缩包里的Entry，如文件名</param>
+            <returns>压缩包Stream</returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.CompressHelper.CompressionBase64(System.String,System.Int32,System.String)">
+            <summary>
+            将输入的Base64字符对应的字节压缩，并转换为Base64返回
+            </summary>
+            <param name="sourceBase64">需要压缩的Base64字符</param>
+            <param name="compressionLevel">压缩级别，0-9之间的数字，0不压缩，9最大压缩，数字越大压缩比越大，速度越慢</param>
+            <param name="entryName">指定压缩包里的Entry，如文件名</param>
+            <returns>压缩包Base64字符</returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.CompressHelper.CompressionDirectory(System.String,System.String,System.Boolean,System.Int32,System.String)">
+            <summary>
+            将指定目录下的所有文件压缩为指定压缩文件
+            </summary>
+            <param name="sourceDirectory">需要压缩的源目录</param>
+            <param name="filePath">压缩文件</param>
+            <param name="recursive">是否递归压缩子目录</param>
+            <param name="compressionLevel">压缩级别，0-9之间的数字，0不压缩，9最大压缩，数字越大压缩比越大，速度越慢</param>
+            <param name="searchPattern">文件匹配模式，只有匹配的文件才会压缩</param>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.CompressHelper.CompressionDirectory(System.String,System.Boolean,System.Int32,System.String)">
+            <summary>
+            将指定目录下的所有文件压缩为Stream
+            </summary>
+            <param name="sourceDirectory">需要压缩的源目录</param>
+            <param name="recursive">是否递归压缩子目录</param>
+            <param name="compressionLevel">压缩级别，0-9之间的数字，0不压缩，9最大压缩，数字越大压缩比越大，速度越慢</param>
+            <param name="searchPattern">文件匹配模式，只有匹配的文件才会压缩</param>
+            <returns>压缩包Stream</returns>
+        </member>
+        <member name="T:TomTaw.IMCIS.Utility.WebServiceProxy">
+            <summary>
+            动态调用WebService方法
+            </summary>
+        </member>
+        <member name="F:TomTaw.IMCIS.Utility.WebServiceProxy._wsdlUrl">
+            <summary>
+            web服务地址
+            </summary>
+        </member>
+        <member name="F:TomTaw.IMCIS.Utility.WebServiceProxy._endpointAddress">
+            <summary>
+            指定的Endpoint地址
+            </summary>
+        </member>
+        <member name="F:TomTaw.IMCIS.Utility.WebServiceProxy._timeout">
+            <summary>
+            调用ws的超时时间，空则使用默认
+            </summary>
+        </member>
+        <member name="F:TomTaw.IMCIS.Utility.WebServiceProxy._protocolName">
+            <summary>
+            Soap协议名称：Soap或Soap12
+            </summary>
+        </member>
+        <member name="F:TomTaw.IMCIS.Utility.WebServiceProxy._wsdlName">
+            <summary>
+            web服务名称
+            </summary>
+        </member>
+        <member name="F:TomTaw.IMCIS.Utility.WebServiceProxy._wsdlNamespace">
+            <summary>
+            代理类命名空间
+            </summary>
+        </member>
+        <member name="F:TomTaw.IMCIS.Utility.WebServiceProxy._typeName">
+            <summary>
+            代理类类型名称
+            </summary>
+        </member>
+        <member name="F:TomTaw.IMCIS.Utility.WebServiceProxy._assName">
+            <summary>
+            程序集名称
+            </summary>
+        </member>
+        <member name="F:TomTaw.IMCIS.Utility.WebServiceProxy._assPath">
+            <summary>
+            代理类所在程序集路径
+            </summary>
+        </member>
+        <member name="F:TomTaw.IMCIS.Utility.WebServiceProxy._instance">
+            <summary>
+            代理类的实例
+            </summary>
+        </member>
+        <member name="F:TomTaw.IMCIS.Utility.WebServiceProxy.deleteAssembleWhenError">
+            <summary>
+            出现错误时，删除代理类库
+            </summary>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.WebServiceProxy.#ctor(System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="wsdlUrl">wsdlUrl地址</param>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.WebServiceProxy.#ctor(System.String,System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="wsdlUrl">wsdlUrl地址</param>
+            <param name="wsdlName">名称，用于动态生成dll名称，空则使用wsdl服务名</param>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.WebServiceProxy.#ctor(System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            构造函数
+            </summary>
+            <param name="wsdlUrl">wsdlUrl地址</param>
+            <param name="wsdlName">名称，用于动态生成dll名称，空则使用wsdl服务名</param>
+            <param name="timeout">调用ws的超时时间（毫秒），空则使用默认</param>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.WebServiceProxy.#ctor(System.String,System.Boolean,System.String,System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="wsdlUrl">wsdlUrl地址</param>
+            <param name="useWsdlUrl4EndpointAddress">true:使用_wsdlUrl中的地址作为服务调用地址（去掉wsdl后缀）；false:使用wsdl中描述的服务地址（service->port->soap:address->location）进行调用</param>
+            <param name="protocolName">Soap协议名称：Soap或Soap12，空则使用Soap</param>
+            <param name="wsdlName">名称，用于动态生成dll名称，空则使用wsdl服务名</param>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.WebServiceProxy.#ctor(System.String,System.String,System.String,System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="wsdlUrl">wsdlUrl地址</param>
+            <param name="endpointAddress">指定的Endpoint地址</param>
+            <param name="protocolName">Soap协议名称：Soap或Soap12，空则使用Soap</param>
+            <param name="wsdlName">名称，用于动态生成dll名称，空则使用wsdl服务名</param>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.WebServiceProxy.#ctor(System.String,System.String,System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            
+            </summary>
+            <param name="wsdlUrl">wsdlUrl地址</param>
+            <param name="endpointAddress">指定的Endpoint地址，空则使用wsdl里的endpoint</param>
+            <param name="protocolName">Soap协议名称：Soap或Soap12，空则使用Soap</param>
+            <param name="wsdlName">名称，用于动态生成dll名称，空则使用wsdl服务名</param>
+            <param name="timeout">调用ws的超时时间（毫秒），空则使用默认</param>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.WebServiceProxy.CreateServiceAssembly(System.String,System.String)">
+            <summary>
+            得到WSDL信息，生成本地代理类并编译为DLL							
+            </summary>							
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.WebServiceProxy.ExecuteQuery(System.String,System.Object[])">
+            <summary>
+            执行代理类指定方法，有返回值
+            </summary>
+            <param	name="methodName">方法名称</param>
+            <param	name="param">参数</param>
+            <returns>object</returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.WebServiceProxy.ExecuteNoQuery(System.String,System.Object[])">
+            <summary>
+            执行代理类指定方法，无返回值
+            </summary>
+            <param	name="methodName">方法名称</param>
+            <param	name="param">参数</param>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.WebServiceProxy.initTypeName">
+            <summary>
+            得到代理类类型名称
+            </summary>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.WebServiceProxy.checkForImports(System.String,System.Web.Services.Description.ServiceDescriptionImporter)">
+            <summary>
+            根据web	service文档架构向代理类添加ServiceDescription和XmlSchema
+            </summary>
+            <param	name="baseWsdlUrl">web服务地址</param>							
+            <param	name="importer">代理类</param>							
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.WebServiceProxy.checkCache">
+            <summary>
+            是否已经存在该程序集
+            </summary>
+            <returns>false:不存在该程序集,true:已经存在该程序集</returns>
+        </member>
+        <member name="P:TomTaw.IMCIS.Utility.WebServiceProxy.Instance">
+            <summary>
+            代理类的实例
+            </summary>
+        </member>
+        <member name="T:TomTaw.IMCIS.Utility.JsonHelper">
+            <summary>
+            Json序列化与反序列化，采用的是类JavaScriptSerializer
+            建议使用Newtonsoft.Json.dll方法，JsonConvert.SerializeObject(obj, Formatting.None, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+            </summary>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.JsonHelper.SerializeToJsonString(System.Object)">
+            <summary>
+            序列化object对象为UTF8编码的JSON字符串
+            </summary>
+            <param name="obj">输入的对象</param>
+            <returns>返回的Json字符串</returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.JsonHelper.DeserializeFromJsonString``1(System.String)">
+            <summary>
+            反序列化JSON字符串为指定类型
+            </summary>
+            <typeparam name="T">指定类型</typeparam>
+            <param name="jsonString">json字符串</param>
+            <returns>反序列化后的结果对象</returns>
+        </member>
+        <member name="T:TomTaw.IMCIS.Utility.QueryHelper">
+            <summary>
+            查询操作类
+            </summary>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.QueryHelper.GetPageList``1(System.Linq.IQueryable{``0},System.Int32,System.Int32,System.String,System.String,System.Int32@)">
+            <summary>
+            从query获取指定分页的数据和总记录数
+            </summary>
+            <typeparam name="T">数据类</typeparam>
+            <param name="query">输入的查询</param>
+            <param name="page">获取第几页数据，小于等于0表示不分页</param>
+            <param name="rows">获取几行数据，小于等于0表示获取所有数据</param>
+            <param name="sort">排序字段名称，为空表示不排序</param>
+            <param name="order">排序方式，DESC为降序，ASC为升序，其他默认为升序</param>
+            <param name="totalCount">查询结果总数</param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.QueryHelper.GetPageQueryable``1(System.Linq.IQueryable{``0},System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            设置query的分页信息
+            </summary>
+            <typeparam name="T">数据类</typeparam>
+            <param name="query">输入的查询</param>
+            <param name="page">获取第几页数据，小于等于0表示获取所有数据</param>
+            <param name="rows">获取几行数据，小于等于0表示获取所有数据</param>
+            <param name="sort">排序字段名称，为空表示不排序</param>
+            <param name="order">排序方式，DESC为降序，ASC为升序，其他默认为升序</param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.QueryHelper.And``1(System.Linq.IQueryable{``0},System.String,System.String)">
+            <summary>
+            在输入查询的基础上，采用And进一步过滤指定字段值
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="query">输入的查询</param>
+            <param name="columnName">过滤字段名称</param>
+            <param name="value">过滤字段值</param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.QueryHelper.In``2(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Collections.Generic.IEnumerable{``1})">
+            <summary>
+            在输入查询的基础上，采用In进一步过滤指定字段值
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <typeparam name="TValue"></typeparam>
+            <param name="source">输入的查询</param>
+            <param name="valueSelector">指定的字段</param>
+            <param name="values">指定的值</param>
+            <returns></returns>
+        </member>
+        <member name="T:TomTaw.IMCIS.Utility.FileHelper">
+            <summary>
+            文件操作类
+            </summary>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.FileHelper.GetFileBytes(System.String,System.Int32)">
+            <summary>
+            获取文件字节流
+            </summary>
+            <param name="filePath">文件路径</param>
+            <param name="count">获取的字节数</param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.FileHelper.SaveFile(System.Byte[],System.String)">
+            <summary>
+            将字节流保存为指定文件
+            </summary>
+            <param name="fileBytes">字节流</param>
+            <param name="filePath">保存的文件路径</param>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.FileHelper.SaveFile(System.IO.Stream,System.String)">
+            <summary>
+            保存文件
+            </summary>
+            <param name="fileStream"></param>
+            <param name="filePath"></param>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.FileHelper.GetDirectoryFileAndFolder(System.String)">
+            <summary>
+            遍历获取指定目录下的所有文件信息，包括目录
+            </summary>
+            <param name="dirPath">指定目录</param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.FileHelper.GetDirectorySize(System.String)">
+            <summary>
+            获取指定目录的总大小，单位为字节
+            </summary>
+            <param name="dirPath">指定目录</param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.FileHelper.CopyDirectory(System.String,System.String)">
+            <summary>
+            拷贝目录
+            </summary>
+            <param name="sourceDir"></param>
+            <param name="targetDir"></param>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.FileHelper.GetDiskFreeSpaceEx(System.String,System.UInt64@,System.UInt64@,System.UInt64@)">
+            <summary>
+            获取磁盘空间
+            </summary>
+            <param name="lpDirectoryName"></param>
+            <param name="lpFreeBytesAvailable"></param>
+            <param name="lpTotalNumberOfBytes"></param>
+            <param name="lpTotalNumberOfFreeBytes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.FileHelper.GetDriveSpaceInfo(System.String,System.String,System.String)">
+            <summary>
+            获取驱动器磁盘空间信息
+            </summary>
+            <param name="path">路径名称</param>
+            <param name="username">当路径为共享路径时，指定访问共享的用户名</param>
+            <param name="password">当路径为共享路径时，指定访问共享的用户密码</param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.FileHelper.RemoveFileNameInvalidChar(System.String)">
+            <summary>
+            Remove invalid characters which are not allowed in the file name
+            </summary>
+            <param name="fileName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.FileHelper.WNetAddConnection2A(TomTaw.IMCIS.Utility.NETRESOURCE[],System.String,System.String,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="lpNetResource"></param>
+            <param name="lpPassword"></param>
+            <param name="lpUserName"></param>
+            <param name="dwFlags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.FileHelper.WNetCancelConnection2A(System.String,System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="sharename"></param>
+            <param name="dwFlags"></param>
+            <param name="fForce"></param>
+            <returns></returns>
+        </member>
+        <member name="F:TomTaw.IMCIS.Utility.FileHelper._lockConnectShare">
+            <summary>
+            用于连接共享时的并发锁
+            </summary>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.FileHelper.ConnectShare(System.String,System.String,System.String)">
+            <summary>
+            连接共享，实现代码示例
+            lock (FileHelper._lockShareConnect)
+            {
+               var nStatus = NetworkConnection.Connect(FileUploadFolder, FileUploadFolderUser, FileUploadFolderPassword);        
+            }
+            </summary>
+            <param name="remotePath"></param>
+            <param name="username"></param>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.FileHelper.DisconnectShare(System.String)">
+            <summary>
+            断开共享连接
+            If this parameter specifies a redirected local device, the function cancels only the specified device redirection. 
+            If the parameter specifies a remote network resource, all connections without devices are canceled.
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="T:TomTaw.IMCIS.Utility.DriveSpaceInfo">
+            <summary>
+            磁盘空间信息
+            </summary>
+        </member>
+        <member name="P:TomTaw.IMCIS.Utility.DriveSpaceInfo.AvailableFreeSpace">
+            <summary>
+            当前用户可用空间，字节
+            </summary>
+        </member>
+        <member name="P:TomTaw.IMCIS.Utility.DriveSpaceInfo.AvailableFreeSpaceM">
+            <summary>
+            当前用户可用空间，M
+            </summary>
+        </member>
+        <member name="P:TomTaw.IMCIS.Utility.DriveSpaceInfo.AvailableFreeSpaceG">
+            <summary>
+            当前用户可用空间，G
+            </summary>
+        </member>
+        <member name="P:TomTaw.IMCIS.Utility.DriveSpaceInfo.TotalFreeSpace">
+            <summary>
+            总的可用空间（与用户无关），字节
+            </summary>
+        </member>
+        <member name="P:TomTaw.IMCIS.Utility.DriveSpaceInfo.TotalFreeSpaceM">
+            <summary>
+            总的可用空间（与用户无关），M
+            </summary>
+        </member>
+        <member name="P:TomTaw.IMCIS.Utility.DriveSpaceInfo.TotalFreeSpaceG">
+            <summary>
+            总的可用空间（与用户无关），G
+            </summary>
+        </member>
+        <member name="P:TomTaw.IMCIS.Utility.DriveSpaceInfo.TotalSize">
+            <summary>
+            总空间，字节
+            </summary>
+        </member>
+        <member name="P:TomTaw.IMCIS.Utility.DriveSpaceInfo.TotalSizeM">
+            <summary>
+            总空间，M
+            </summary>
+        </member>
+        <member name="P:TomTaw.IMCIS.Utility.DriveSpaceInfo.TotalSizeG">
+            <summary>
+            总空间，G
+            </summary>
+        </member>
+        <member name="P:TomTaw.IMCIS.Utility.DriveSpaceInfo.AvailableFreeSpacePercent">
+            <summary>
+            当前用户可用空间百分比
+            </summary>
+        </member>
+        <member name="P:TomTaw.IMCIS.Utility.DriveSpaceInfo.TotalFreeSpacePercent">
+            <summary>
+            总的可用空间百分比
+            </summary>
+        </member>
+        <member name="T:TomTaw.IMCIS.Utility.ERROR_ID">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:TomTaw.IMCIS.Utility.RESOURCE_SCOPE">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:TomTaw.IMCIS.Utility.RESOURCE_TYPE">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:TomTaw.IMCIS.Utility.RESOURCE_USAGE">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:TomTaw.IMCIS.Utility.RESOURCE_DISPLAYTYPE">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:TomTaw.IMCIS.Utility.NETRESOURCE">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:TomTaw.IMCIS.Utility.CertificateUtil">
+            <summary>
+            证书操作类
+            </summary>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.CertificateUtil.SetCertificatePolicy">
+            <summary>
+            Sets the cert policy.
+            </summary>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.CertificateUtil.RemoteCertificateValidate(System.Object,System.Security.Cryptography.X509Certificates.X509Certificate,System.Security.Cryptography.X509Certificates.X509Chain,System.Net.Security.SslPolicyErrors)">
+            <summary>
+            Remotes the certificate validate.
+            </summary>
+            <param name="sender"></param>
+            <param name="certificate"></param>
+            <param name="chain"></param>
+            <param name="errors"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.CertificateUtil.GetX509CertificateString(System.Security.Cryptography.X509Certificates.X509Certificate)">
+            <summary>
+            获取证书信息字符串
+            </summary>
+            <param name="certificate">证书</param>
+            <returns>证书信息字符串</returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.CertificateUtil.FindByThumbprint(System.Security.Cryptography.X509Certificates.StoreLocation,System.Security.Cryptography.X509Certificates.StoreName,System.String)">
+            <summary>
+            查找证书
+            </summary>
+            <param name="storeLocation">证书存储路径</param>
+            <param name="storeName">证书存储名称</param>
+            <param name="thumbprint">证书缩略字符串</param>
+            <returns>查找到的证书</returns>
+        </member>
+        <member name="T:TomTaw.IMCIS.Utility.PrinterHelper">
+            <summary>
+            打印机操作类
+            </summary>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.PrinterHelper.GetDeaultPrinterName">
+            <summary> 
+            获取本机的默认打印机名称 
+            </summary> 
+            <returns>默认打印机名称</returns> 
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.PrinterHelper.GetPrinterState(System.String)">
+            <summary>
+            通过winspool获取打印机状态
+            </summary>
+            <param name="printerName">打印机名称</param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.PrinterHelper.GetPrinterStatusSnmp(System.String)">
+            <summary>
+            通过SNMP获取打印机状态
+            </summary>
+            <param name="printerIP">打印机IP</param>
+            <returns></returns>
+        </member>
+        <member name="T:TomTaw.IMCIS.Utility.PrinterStatusInfo">
+            <summary>
+            打印机状态信息
+            </summary>
+        </member>
+        <member name="P:TomTaw.IMCIS.Utility.PrinterStatusInfo.PrinterStatus">
+            <summary>
+            打印机状态
+            </summary>
+        </member>
+        <member name="P:TomTaw.IMCIS.Utility.PrinterStatusInfo.PrinterErrorDesc">
+            <summary>
+            打印机错误描述
+            </summary>		
+        </member>
+        <member name="P:TomTaw.IMCIS.Utility.PrinterStatusInfo.WinspoolPrinterState">
+            <summary>
+            winspool获取的原始打印机状态
+            </summary>	
+        </member>
+        <member name="P:TomTaw.IMCIS.Utility.PrinterStatusInfo.SnmpPrinterStatus">
+            <summary>
+            通过SNMP获取的原始打印机状态
+            </summary>	
+        </member>
+        <member name="P:TomTaw.IMCIS.Utility.PrinterStatusInfo.SnmpPrinterDetectedErrorState">
+            <summary>
+            通过SNMP获取的原始打印机错误状态
+            </summary>	
+        </member>
+        <member name="T:TomTaw.IMCIS.Utility.PrinterStatusEnum">
+            <summary>
+            打印机状态
+            </summary>
+        </member>
+        <member name="F:TomTaw.IMCIS.Utility.PrinterStatusEnum.Idle">
+            <summary>
+            空闲
+            </summary>
+        </member>
+        <member name="F:TomTaw.IMCIS.Utility.PrinterStatusEnum.Printing">
+            <summary>
+            打印中
+            </summary>
+        </member>
+        <member name="F:TomTaw.IMCIS.Utility.PrinterStatusEnum.Error">
+            <summary>
+            错误
+            </summary>
+        </member>
+        <member name="T:TomTaw.IMCIS.Utility.Cryptography">
+            <summary>
+            加密解密类
+            </summary>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.Cryptography.GetMd5HashX2(System.Byte[],System.Boolean,System.Boolean)">
+            <summary>
+            获取输入字节的MD5 hash转换为X2字符串值
+            </summary>
+            <param name="input"></param>        
+            <param name="lowerCase">返回字符串是否转换为小写</param>
+            <param name="paddingZero">返回字符串是否补齐0</param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.Cryptography.GetMd5HashX2(System.String,System.Text.Encoding,System.Boolean,System.Boolean)">
+            <summary>
+            获取输入字符串使用指定编码方式取字节后的的MD5 hash转换为X2字符串值
+            </summary>
+            <param name="input"></param>
+            <param name="encoding">采用的编码方式，默认为Unicode</param>
+            <param name="lowerCase">返回字符串是否转换为小写</param>
+            <param name="paddingZero">返回字符串是否补齐0</param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.Cryptography.VerifyMd5HashX2(System.Byte[],System.String,System.Boolean)">
+            <summary>
+            判断输入字节的MD5 hash转换为X2字符串值是否与输入的hash值一致。忽略大小写。
+            </summary>
+            <param name="input">输入字符串</param>
+            <param name="hash">输入的MD5编码</param>
+            <param name="paddingZero">返回字符串是否补齐0</param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.Cryptography.VerifyMd5HashX2(System.String,System.String,System.Text.Encoding)">
+            <summary>
+            判断输入字符串使用指定编码方式取字节后的MD5 hash转换为X2字符串值是否与输入的hash值一致。忽略大小写。
+            </summary>
+            <param name="input">输入字符串</param>
+            <param name="hash">输入的MD5编码</param>
+            <param name="encoding">采用的编码方式，默认为Unicode</param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.Cryptography.GetMd5HashBase64(System.Byte[])">
+            <summary>
+            获取输入字节的MD5 hash转换为Base64编码后的字符串
+            </summary>
+            <param name="input">输入字节</param>        
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.Cryptography.GetMd5HashBase64(System.String,System.Text.Encoding)">
+            <summary>
+            获取输入字符串使用指定编码方式取字节后的MD5 hash转换为Base64编码后的字符串
+            </summary>
+            <param name="input">输入字符</param>
+            <param name="encoding">采用的编码方式，默认为Unicode</param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.Cryptography.GetSHA1HashX2(System.String,System.Text.Encoding,System.Boolean,System.Boolean)">
+            <summary>
+            对输入的字符使用Unicode编码生成SHA1编码X2字符串
+            </summary>
+            <param name="input">输入字符</param>
+            <param name="encoding">采用的编码方式，默认为Unicode</param>
+            <param name="lowerCase">返回字符串是否转换为小写</param>
+            <param name="paddingZero">返回字符串是否补齐0</param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.Cryptography.GetSHA1HashX2(System.Byte[],System.Boolean,System.Boolean)">
+            <summary>
+            使用输入的字节流生成SHA1编码X2字符串
+            </summary>
+            <param name="res">字节流</param>
+            <param name="lowerCase">返回字符串是否转换为小写</param>
+            <param name="paddingZero">返回字符串是否补齐0</param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.Cryptography.GetSHA1HashX2(System.String)">
+            <summary>
+            使用输入的文件生成SHA1编码X2字符串，返回字符串大写且补齐0。只取前100M。大于100M需要调用另外指定大小的接口
+            </summary>
+            <param name="filePath">文件路径</param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.Cryptography.GetSHA1HashX2(System.String,System.Boolean,System.Boolean,System.Int32)">
+            <summary>
+            使用输入的文件生成SHA1编码X2字符串
+            </summary>
+            <param name="filePath">文件路径</param>
+            <param name="lowerCase">返回字符串是否转换为小写</param>
+            <param name="paddingZero">返回字符串是否补齐0</param>
+            <param name="bytesCount">取多少字节计算计算哈希0表示整个文件，默认只取前100M</param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.Cryptography.GetSHA1HashX2(System.IO.Stream,System.Boolean,System.Boolean)">
+            <summary>
+            使用输入的Stream生成SHA1编码X2字符串
+            </summary>
+            <param name="stream">字节流</param>
+            <param name="lowerCase">返回字符串是否转换为小写</param>
+            <param name="paddingZero">返回字符串是否补齐0</param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.Cryptography.GetSHA256HashX2(System.String,System.Text.Encoding,System.Boolean,System.Boolean)">
+            <summary>
+            对输入的字符使用Unicode编码生成SHA256编码X2字符串
+            </summary>
+            <param name="input">输入字符</param>
+            <param name="encoding">采用的编码方式，默认为Unicode</param>
+            <param name="lowerCase">返回字符串是否转换为小写</param>
+            <param name="paddingZero">返回字符串是否补齐0</param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.Cryptography.GetSHA512HashX2(System.String,System.Text.Encoding,System.Boolean,System.Boolean)">
+            <summary>
+            对输入的字符使用Unicode编码生成SHA512编码X2字符串
+            </summary>
+            <param name="input">输入字符</param>
+            <param name="encoding">采用的编码方式，默认为Unicode</param>
+            <param name="lowerCase">返回字符串是否转换为小写</param>
+            <param name="paddingZero">返回字符串是否补齐0</param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.Cryptography.DESEncrypt(System.String,System.String,TomTaw.IMCIS.Utility.StringFormatEnum,System.Text.Encoding,System.Security.Cryptography.CipherMode,System.Security.Cryptography.PaddingMode,System.String)">
+            <summary>
+            使用指定编码方式将输入的字符串进行DES加密
+            </summary>
+            <param name="str">要加密的字符串</param>
+            <param name="key">密钥，为空时则采用默认密钥。</param>
+            <param name="strFormat">加密字符串格式</param>
+            <param name="encoding">编码方式，默认为UTF-8</param>
+            <param name="cipherMode">密码模式</param>
+            <param name="paddingMode">补齐模式</param>
+            <param name="iv">偏移量，空则与密钥一致</param>
+            <returns>加密字符串</returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.Cryptography.DESDecrypt(System.String,System.String,TomTaw.IMCIS.Utility.StringFormatEnum,System.Text.Encoding,System.Security.Cryptography.CipherMode,System.Security.Cryptography.PaddingMode,System.String)">
+            <summary>
+            使用指定编码方式进行DES解密。
+            </summary>
+            <param name="str">要解密的字符串</param>
+            <param name="key">密钥，为空时则采用默认密钥</param>
+            <param name="strFormat">要解密的字符串格式</param>
+            <param name="encoding">编码方式，默认为UTF-8</param>
+            <param name="cipherMode">密码模式</param>
+            <param name="paddingMode">补齐模式</param>
+            <param name="iv">偏移量，空则与密钥一致</param>
+            <returns>已解密的字符串</returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.Cryptography.AESEncrypt(System.String,System.String,TomTaw.IMCIS.Utility.StringFormatEnum,System.Text.Encoding,System.Security.Cryptography.CipherMode,System.Security.Cryptography.PaddingMode,System.String)">
+            <summary>
+            使用指定编码方式将输入的字符串进行AES加密
+            </summary>
+            <param name="str">要加密的字符串</param>
+            <param name="key">密钥，为空时则采用默认密钥。</param>
+            <param name="strFormat">加密字符串格式</param>
+            <param name="encoding">编码方式，默认为UTF-8</param>
+            <param name="cipherMode">密码模式</param>
+            <param name="paddingMode">补齐模式</param>
+            <param name="iv">偏移量，空则与密钥一致</param>
+            <returns>加密字符串</returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.Cryptography.AESDecrypt(System.String,System.String,TomTaw.IMCIS.Utility.StringFormatEnum,System.Text.Encoding,System.Security.Cryptography.CipherMode,System.Security.Cryptography.PaddingMode,System.String)">
+            <summary>
+            使用指定编码方式进行AES解密。
+            </summary>
+            <param name="str">要解密的字符串</param>
+            <param name="key">密钥，为空时则采用默认密钥</param>
+            <param name="strFormat">要解密的字符串格式</param>
+            <param name="encoding">编码方式，默认为UTF-8</param>
+            <param name="cipherMode">密码模式</param>
+            <param name="paddingMode">补齐模式</param>
+            <param name="iv">偏移量，空则与密钥一致</param>
+            <returns>已解密的字符串</returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.Cryptography.HexStringFromByteArray(System.Byte[],System.Boolean,System.Boolean)">
+            <summary>
+            将Byte数组转换为16进制字符串
+            </summary>
+            <param name="bytes">Byte数组</param>
+            <param name="lowerCase">返回的字符串是否小写</param>
+            <param name="paddingZero">返回字符串是否补齐0</param>
+            <returns>16进制字符串</returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.Cryptography.ByteArrayFromHexString(System.String)">
+            <summary>
+            将16进制字符串转换为Byte数组
+            </summary>
+            <param name="str">16进制字符串</param>
+            <returns>Byte数组</returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.Cryptography.Redim(System.Byte[],System.Int32)">
+            <summary>
+            byte数组补齐或截取到指定长度
+            </summary>
+            <param name="arr">byte数组</param>
+            <param name="newSize">指定长度</param>
+            <returns>补齐或截取后的byte数组</returns>
+        </member>
+        <member name="T:TomTaw.IMCIS.Utility.StringFormatEnum">
+            <summary>
+            字符串格式
+            </summary>
+        </member>
+        <member name="F:TomTaw.IMCIS.Utility.StringFormatEnum.HexX2">
+            <summary>
+            十六进制大写字符串
+            </summary>
+        </member>
+        <member name="F:TomTaw.IMCIS.Utility.StringFormatEnum.Base64">
+            <summary>
+            Base64字符串
+            </summary>
+        </member>
+        <member name="T:TomTaw.IMCIS.Utility.XmlHelper">
+            <summary>
+            Xml操作类，包括XML序列化和反序列化
+            </summary>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.XmlHelper.SerializeToString(System.Object,System.String,System.String)">
+            <summary>
+            序列化object对象为UTF8编码的XML字符串
+            </summary>
+            <param name="ObjectToSerialize"></param>
+            <param name="stylesheet">如需要写的xml-stylesheet格式如下<?xml-stylesheet href='IHEDocumentList.xsl' type='text/xsl'?>，则stylesheet参数需要传href='IHEDocumentList.xsl' type='text/xsl'</param>
+            <param name="encodingName">编码名字，如UTF-8，GB2312，默认为UTF-8，用于xml信息头中的encoding</param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.XmlHelper.SerializeToBytes(System.Object,System.String,System.String)">
+            <summary>
+            序列化object对象为指定编码的XML字节数组
+            </summary>
+            <param name="ObjectToSerialize">需要被序列化的对象</param>
+            <param name="stylesheet">如需要写的xml-stylesheet格式如下<?xml-stylesheet href='IHEDocumentList.xsl' type='text/xsl'?>，则stylesheet参数需要传href='IHEDocumentList.xsl' type='text/xsl'</param>
+            <param name="encodingName">编码名字，如UTF-8，GB2312，默认为UTF-8</param>
+            <returns>结果字节数字</returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.XmlHelper.SerializeToFile(System.Object,System.String,System.String,System.String)">
+            <summary>
+            序列化object对象为对象为指定编码的XML文件
+            </summary>
+            <param name="ObjectToSerialize">需要被序列化的对象</param>
+            <param name="xmlFilePath">输出的XML文件路径</param>
+            <param name="stylesheet">如需要写的xml-stylesheet格式如下<?xml-stylesheet href='IHEDocumentList.xsl' type='text/xsl'?>，则stylesheet参数需要传href='IHEDocumentList.xsl' type='text/xsl'</param>
+            <param name="encodingName">编码名字，如UTF-8，GB2312，默认为UTF-8</param>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.XmlHelper.DeserializeFromString``1(System.String)">
+            <summary>
+            反序列化XML字符串为指定类型
+            </summary>
+            <typeparam name="T">指定类型</typeparam>
+            <param name="xmlString">XML字符串</param>
+            <returns>反序列化后的结果对象</returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.XmlHelper.DeserializeFromBytes``1(System.Byte[],System.String)">
+            <summary>
+            反序列化指定编码的XML字节流为指定类型
+            </summary>
+            <typeparam name="T">指定类型</typeparam>
+            <param name="bytes">XML字节流</param>
+            <param name="encodingName">编码名字，如UTF-8，GB2312，默认为UTF-8</param>
+            <returns>反序列化后的结果对象</returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.XmlHelper.DeserializeFromFile``1(System.String)">
+            <summary>
+            反序列化指定XML文件为指定类型
+            </summary>
+            <typeparam name="T">指定类型</typeparam>
+            <param name="xmlFilePath">XML文件路径</param>
+            <returns>反序列化后的结果对象</returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.XmlHelper.XsltTransform``1(System.Object,System.String)">
+            <summary>
+            采用指定的xslt文件，将输入的对象转换为指定的对象
+            </summary>
+            <typeparam name="T">返回对象类型</typeparam>
+            <param name="inputObject">输入对象</param>
+            <param name="xsltFilePath">xslt文件路径</param>
+            <returns>返回对象</returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.XmlHelper.XsltTransform(System.String,System.String)">
+            <summary>
+            采用指定的xslt文件，将输入的xml字符串转换为新的xml字符串
+            </summary>
+            <param name="inputXML">输入的xml字符串</param>
+            <param name="xsltFilePath">xslt文件路径</param>
+            <returns>xml字符串</returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.XmlHelper.XsltTransform(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            采用指定的xslt文件，将输入的xml文件转换为新的xml文件
+            </summary>
+            <param name="inXmlFilePath">输入的xml文件路径</param>
+            <param name="outXmlFilePath">输出的xml文件路径</param>
+            <param name="xsltFilePath">xslt文件路径</param>
+            <param name="stylesheet">如需要写的xml-stylesheet格式如下<?xml-stylesheet href='IHEDocumentList.xsl' type='text/xsl'?>，则stylesheet参数需要传href='IHEDocumentList.xsl' type='text/xsl'</param>
+            <param name="encodingName">编码名字，如UTF-8，GB2312，默认为UTF-8</param>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.XmlHelper.ReplaceLowOrderASCIICharacters(System.String)">
+            <summary>
+            把一个字符串中的 低序位 ASCII 字符 替换成十六进制的NCR（numeric character reference）字符
+            转换  ASCII  0 - 8
+            转换  ASCII 11 - 12
+            转换  ASCII 14 - 31
+            </summary>
+            <param name="input"></param>
+            <returns>转换后字符串</returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.XmlHelper.GetLowOrderASCIICharacters(System.String)">
+            <summary>
+            把一个字符串中下列十六进制的NCR（numeric character reference）字符替换成 低序位 ASCII 字符
+            转换 ASCII  0 - 8
+            转换 ASCII 11 - 12
+            转换 ASCII 14 - 31
+            </summary>
+            <param name="input"></param>
+            <returns>转换后字符串</returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.XmlHelper.DeleteLowOrderASCIICharacters(System.String)">
+            <summary>
+            删除字符串中低位不可见字符
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="T:TomTaw.IMCIS.Utility.MessageLoggerBehaviorExtension">
+            <summary>
+            服务消息记录扩展，使用该扩展，能记录服务发送和接收的消息。
+            需要配置config文件中的节点system.serviceModel-extensions-behaviorExtensions
+            需要配置config文件中的log4net
+            </summary>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.MessageLoggerBehaviorExtension.CreateBehavior">
+            <summary>
+            Creates a behavior extension based on the current configuration settings.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:TomTaw.IMCIS.Utility.MessageLoggerBehaviorExtension.BehaviorType">
+            <summary>
+            Gets the type of behavior.
+            </summary>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.MessageLogger.SaveMessage(System.Boolean,System.Xml.UniqueId,System.String)">
+            <summary>
+            保存消息
+            </summary>
+            <param name="requestOrResponse"></param>
+            <param name="uniqueId"></param>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.MessageLogger.GetMessageSavePath">
+            <summary>
+            获取消息保存的路径
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:TomTaw.IMCIS.Utility.DateHelper">
+            <summary>
+            日期操作类
+            </summary>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.DateHelper.DateToStartDateTime(System.String)">
+            <summary>
+            将yyyy-MM-dd的时间字符串转换为yyyy-MM-dd 00:00:00的DateTime值。
+            </summary>
+            <param name="date"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.DateHelper.DateToEndDateTime(System.String)">
+            <summary>
+            将yyyy-MM-dd的时间字符串转换为yyyy-MM-dd 23:59:59的DateTime值。
+            </summary>
+            <param name="date"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.DateHelper.DateTimeToString(System.Nullable{System.DateTime})">
+            <summary>
+            将日期类型转换为yyyy-MM-dd HH:mm:ss格式的字符串，如果日期为空，则返回空字符串
+            </summary>
+            <param name="dateTime"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.DateHelper.StringToDateTime(System.String)">
+            <summary>
+            将字符串转换为时间格式，支持各种类型的时间格式，如果转换失败，则抛出异常。
+            </summary>
+            <param name="dateTimeString"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.DateHelper.StringToNullableDateTime(System.String)">
+            <summary>
+            将字符串转换为可为空时间格式，支持各种类型的时间格式，如果转换失败，则抛出异常。
+            </summary>
+            <param name="dateTimeString"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.DateHelper.FormateDateTimeString(System.String,System.String)">
+            <summary>
+            将输入的时间字符串格式化为指定的格式，默认返回格式为yyyy-MM-dd HH:mm:ss
+            </summary>
+            <param name="dateTimeString"></param>
+            <param name="format"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TomTaw.IMCIS.Utility.DateHelper.GetTimestampUTC">
+            <summary>
+            时间戳，UTC时间1970年01月01日00时00分00秒至今的总秒数
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

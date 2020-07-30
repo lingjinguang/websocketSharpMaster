@@ -1,0 +1,5 @@
+C:\Users\JG\Downloads\websocket-sharp-master\Example2\bin\Release\example2.exe.config
+C:\Users\JG\Downloads\websocket-sharp-master\Example2\bin\Release\example2.exe
+C:\Users\JG\Downloads\websocket-sharp-master\Example2\bin\Release\websocket-sharp.dll
+C:\Users\JG\Downloads\websocket-sharp-master\Example2\obj\Release\ResolveAssemblyReference.cache
+C:\Users\JG\Downloads\websocket-sharp-master\Example2\obj\Release\example2.exe

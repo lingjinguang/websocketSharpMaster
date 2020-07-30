@@ -1,0 +1,3 @@
+C:\Users\JG\Downloads\websocket-sharp-master\websocket-sharp\bin\Release\websocket-sharp.dll
+C:\Users\JG\Downloads\websocket-sharp-master\websocket-sharp\obj\Release\ResolveAssemblyReference.cache
+C:\Users\JG\Downloads\websocket-sharp-master\websocket-sharp\obj\Release\websocket-sharp.dll

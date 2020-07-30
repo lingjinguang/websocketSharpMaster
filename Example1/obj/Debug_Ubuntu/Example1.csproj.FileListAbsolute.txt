@@ -1,0 +1,1 @@
+C:\Users\JG\Downloads\websocket-sharp-master\Example1\obj\Debug_Ubuntu\ResolveAssemblyReference.cache

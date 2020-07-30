@@ -1,0 +1,27 @@
+C:\Users\JG\Downloads\websocket-sharp-master\Example1\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\JG\Downloads\websocket-sharp-master\Example1\bin\Debug\example1.exe
+C:\Users\JG\Downloads\websocket-sharp-master\Example1\bin\Debug\example1.pdb
+C:\Users\JG\Downloads\websocket-sharp-master\Example1\bin\Debug\Newtonsoft.Json.dll
+C:\Users\JG\Downloads\websocket-sharp-master\Example1\bin\Debug\websocket-sharp.dll
+C:\Users\JG\Downloads\websocket-sharp-master\Example1\bin\Debug\websocket-sharp.pdb
+C:\Users\JG\Downloads\websocket-sharp-master\Example1\bin\Debug\Newtonsoft.Json.pdb
+C:\Users\JG\Downloads\websocket-sharp-master\Example1\bin\Debug\Newtonsoft.Json.xml
+C:\Users\JG\Downloads\websocket-sharp-master\Example1\obj\Debug\example1.exe
+C:\Users\JG\Downloads\websocket-sharp-master\Example1\obj\Debug\example1.pdb
+C:\Documents and Settings\Administrator\桌面\websocket-sharp-master\Example1\bin\Debug\example1.exe
+C:\Documents and Settings\Administrator\桌面\websocket-sharp-master\Example1\bin\Debug\example1.pdb
+C:\Documents and Settings\Administrator\桌面\websocket-sharp-master\Example1\bin\Debug\Newtonsoft.Json.dll
+C:\Documents and Settings\Administrator\桌面\websocket-sharp-master\Example1\bin\Debug\websocket-sharp.dll
+C:\Documents and Settings\Administrator\桌面\websocket-sharp-master\Example1\bin\Debug\websocket-sharp.pdb
+C:\Documents and Settings\Administrator\桌面\websocket-sharp-master\Example1\bin\Debug\Newtonsoft.Json.pdb
+C:\Documents and Settings\Administrator\桌面\websocket-sharp-master\Example1\bin\Debug\Newtonsoft.Json.xml
+C:\Documents and Settings\Administrator\桌面\websocket-sharp-master\Example1\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Administrator\桌面\websocket-sharp-master\Example1\obj\Debug\example1.exe
+C:\Documents and Settings\Administrator\桌面\websocket-sharp-master\Example1\obj\Debug\example1.pdb
+C:\Documents and Settings\Administrator\桌面\websocketSharpMaster\Example1\bin\Debug\example1.exe
+C:\Documents and Settings\Administrator\桌面\websocketSharpMaster\Example1\bin\Debug\example1.pdb
+C:\Documents and Settings\Administrator\桌面\websocketSharpMaster\Example1\bin\Debug\websocket-sharp.dll
+C:\Documents and Settings\Administrator\桌面\websocketSharpMaster\Example1\bin\Debug\websocket-sharp.pdb
+C:\Documents and Settings\Administrator\桌面\websocketSharpMaster\Example1\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Administrator\桌面\websocketSharpMaster\Example1\obj\Debug\example1.exe
+C:\Documents and Settings\Administrator\桌面\websocketSharpMaster\Example1\obj\Debug\example1.pdb
