@@ -162,7 +162,7 @@ namespace PrintControl.Services
                 };
 
                 //打印结束-删除一些创建的文件
-                //pd.EndPrint += new PrintEventHandler(deleteFile(files));
+                //pd.EndPrint += new PrintEventHandler();
 
                 if (eventType == "PRINT")
                 {
@@ -177,6 +177,7 @@ namespace PrintControl.Services
                     printPreviewDialog.Document = pd;
                     printPreviewDialog.ShowDialog();
                 }
+                this.deleteTemFile();
                 return "打印成功！";
             }
             catch (Exception e)
@@ -184,11 +185,28 @@ namespace PrintControl.Services
                 return e.Message;
             }
         }
-        public void deleteFile(List<string> files)
+        /// <summary>
+        /// 删除临时文件
+        /// </summary>
+        public void deleteTemFile()
         {
+            string[] files = new string[] { Path.Combine(Directory.GetCurrentDirectory(), "tempImg"), Path.Combine(Directory.GetCurrentDirectory(), "tempPdf") };
             foreach (var file in files)
             {
-                Directory.Delete(file, true);
+                foreach (string f in Directory.GetFileSystemEntries(file))
+                {
+                    if (string.IsNullOrEmpty(f)) return;
+                    if (File.Exists(f))
+                    {
+                        //删除子文件
+                        File.Delete(f);
+                    }
+                    else
+                    {
+                        //删除子文件夹
+                        Directory.Delete(f, true);
+                    }
+                }
             }
         }
         /// <summary>
@@ -348,20 +366,9 @@ namespace PrintControl.Services
                         if (eventType == "PRINT")
                         {
                             this.PrintImage(Convert.ToString(data.data), printType);
-                            //result = this.PreView(Convert.ToString(data.data), eventType);
                         }
                         else if (eventType == "PREVIEW")
                         {
-                            /*
-                            if (printType == "FILEPATH")
-                            {
-                                result = this.PreView(Convert.ToString(data.data), eventType);
-                            }
-                            else 
-                            {
-                                result = this.PreViewByBase64(Convert.ToString(data.data), eventType);
-                            }
-                             * */
                             result = printType == "FILEPATH" ? this.PreView(Convert.ToString(data.data), eventType) : this.PreViewByBase64(Convert.ToString(data.data), eventType);
                         }
                         break;
@@ -377,29 +384,25 @@ namespace PrintControl.Services
                         string folderName = Guid.NewGuid().ToString();
                         string imageDir = Path.Combine(tempDir, folderName);
                         Pdf2JpgUtils.Pdf2Jpg(pdfFile, jpgFile, null, folderName);
-                        //Pdf2JpgUtils.MergerImage(imageDir, targetPath);
-                        /*
-                        */
                         if (eventType == "PRINT")
                         {
-                            //result = this.PreView(imageDir, eventType);
                             foreach (var file in Directory.GetFiles(imageDir))
                             {
                                 this.PrintImage(file, printType);
+                            }
+                            try
+                            {
+                                //删除文件夹
+                                Directory.Delete(imageDir, true);
+                            }
+                            catch (Exception ex)
+                            {
+                                result = string.Format("删除临时目录出错：{0};其他错误信息：{1}", imageDir, ex);
                             }
                         }
                         else if (eventType == "PREVIEW")
                         {
                             result = this.PreView(imageDir, eventType);
-                        }
-                        try
-                        {
-                            //删除文件夹
-                            Directory.Delete(imageDir, true);
-                        }
-                        catch (Exception ex)
-                        {
-                            result = string.Format("删除临时目录出错：{0};其他错误信息：{1}", imageDir, ex);
                         }
                         break;
                     case "HTML":
@@ -418,20 +421,20 @@ namespace PrintControl.Services
                             {
                                 this.PrintImage(file, printType);
                             }
+                            try
+                            {
+                                //删除文件夹
+                                Directory.Delete(imageDir2, true);
+                                Directory.Delete(tempPdfDir, true);
+                            }
+                            catch (Exception ex)
+                            {
+                                result = string.Format("删除临时目录出错：{0};其他错误信息：{1}", tempPdfDir, ex);
+                            }
                         }
                         else if (eventType == "PREVIEW")
                         {
                             result = this.PreView(imageDir2, eventType);
-                        }
-                        try
-                        {
-                            //删除文件夹
-                            Directory.Delete(imageDir2, true);
-                            Directory.Delete(tempPdfDir, true);
-                        }
-                        catch (Exception ex)
-                        {
-                            result = string.Format("删除临时目录出错：{0};其他错误信息：{1}", tempPdfDir, ex);
                         }
                         break;
                     default:
@@ -450,44 +453,5 @@ namespace PrintControl.Services
         {
             //Instance();
         }
-
-        #region Html转换
-
-        WebBrowser webBrowser = null;
-
-        public void ConvertToImg()
-        {
-            webBrowser = new WebBrowser();
-
-            //是否显式滚动条
-            webBrowser.ScrollBarsEnabled = false;
-
-            //加载HTML页面的地址
-            webBrowser.Navigate("http://www.baidu.com");
-
-            //页面加载完成执行事件
-            webBrowser.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webBrowser_DocumentCompleted);
-        }
-
-        private void webBrowser_DocumentCompleted(object sender, EventArgs e)//这个就是当网页载入完毕后要进行的操作
-        {
-            //获取解析后HTML的大小
-            System.Drawing.Rectangle rectangle = webBrowser.Document.Body.ScrollRectangle;
-            int width = rectangle.Width;
-            int height = rectangle.Height;
-
-            //设置解析后HTML的可视区域
-            webBrowser.Width = width;
-            webBrowser.Height = height;
-
-            Bitmap bitmap = new System.Drawing.Bitmap(width, height);
-            webBrowser.DrawToBitmap(bitmap, new System.Drawing.Rectangle(0, 0, width, height));
-
-            //设置图片文件保存路径和图片格式，格式可以自定义
-            string filePath = AppDomain.CurrentDomain.BaseDirectory + "../../SaveFIle/" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".png";
-            bitmap.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
-        }
-        #endregion
-
     }
 }
