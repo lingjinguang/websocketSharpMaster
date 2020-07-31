@@ -124,9 +124,10 @@
     <Compile Include="Services\PrinterService.cs" />
     <Compile Include="Utils\FileUtils.cs" />
     <Compile Include="Utils\Html2PdfUtils.cs" />
-    <Compile Include="Utils\JsonHelper.cs" />
+    <Compile Include="Common\JsonHelper.cs" />
     <Compile Include="Utils\Pdf2JpgUtils.cs" />
-    <Compile Include="Utils\UnicodeFontFactory.cs" />
+    <Compile Include="Utils\PrintUtils.cs" />
+    <Compile Include="Common\UnicodeFontFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\websocket-sharp\websocket-sharp.csproj">

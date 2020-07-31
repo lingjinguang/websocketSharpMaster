@@ -25,93 +25,94 @@ Program.cs：程序的入口Main方法
 using WebSocketSharp.Net;
 using WebSocketSharp.Server;
 
-        private Setting setting = null;
-        HttpServer httpsv = null;
-        private void StartService(bool isInit)
-        {
-            try
-            {
-                if (httpsv != null) httpsv.Stop();
-                httpsv = null;
+private Setting setting = null;
+HttpServer httpsv = null;
+private void StartService(bool isInit)
+{
+    try
+    {
+        if (httpsv != null) httpsv.Stop();
+        httpsv = null;
 
-                //默认保存端口
-                setting.Port = this.txt_port.Text;
-                FileUtils.SaveSetting(setting);
+        //默认保存端口
+        setting.Port = this.txt_port.Text;
+        FileUtils.SaveSetting(setting);
 
-                //监听服务开启
-                int post = Convert.ToInt32(this.txt_port.Text);
-                httpsv = new HttpServer(post);
-                
-                // 添加WebSocket服务
-                httpsv.AddWebSocketService<PrinterService>("/PrinterService");
-				
-                //开启服务
-                httpsv.Start();
-                string txt = httpsv.IsListening ? "服务运行中..." : "启动失败";
-                this.lab_ServiceState.Text = txt;
-            }
-            catch (Exception ex)
-            {
-                this.lab_ServiceState.Text = "失败：可能端口已被占用." + ex.Message;
-            }
-        }
+        //监听服务开启
+        int post = Convert.ToInt32(this.txt_port.Text);
+        httpsv = new HttpServer(post);
+
+        // 添加WebSocket服务
+        httpsv.AddWebSocketService<PrinterService>("/PrinterService");
+
+        //开启服务
+        httpsv.Start();
+        string txt = httpsv.IsListening ? "服务运行中..." : "启动失败";
+        this.lab_ServiceState.Text = txt;
+    }
+    catch (Exception ex)
+    {
+        this.lab_ServiceState.Text = "失败：可能端口已被占用." + ex.Message;
+    }
+}
 ```
 
 **前端连接webSocket服务**
 
 ```js
-			var ws;
-			function connectWebSocket() {
-                //实例化WebSocket对象
-                ws = new WebSocket($("#uri").val());
-                //连接成功建立后响应
-                ws.onopen = function () {
-                    log("成功连接到" + $("#uri").val());
-                }
-                //收到服务器消息后响应
-                ws.onmessage = function (event) {
-                    log("收到服务器消息:"+event.data);
-                    var ret = JSON.parse(event.data);
-                    if (ret.code != 0)
-                        log("异常：" + ret.msg);
-                    else
-                        log("打印成功，后续需要回调打印成功接口");
-                }
-                //连接关闭后响应
-                ws.onclose = function () {
-                    log("关闭连接");
-                    $("#disconnect").attr({ "disabled": "disabled" });
-                    $("#uri").removeAttr("disabled");
-                    $("#connect").removeAttr("disabled");
-                    ws = null;
-                }
-                return false;
-            }
-			//发生信息到webSocket服务器进行通信
-            $("#printPdfByUrl").click(function () {
-                if (!ws || ws.readyState !== 1) {
-                    alert('请先连接服务');
-                    return false;
-                }
-                var url = $('#pdfUrl').val();
-                var data = url;
-                var sendData = {
-                    file_type: "pdf",
-                    print_type: "filePath",
-                    event_type: "print",
-                    data: data
-                };
-                
-                var urlArr = [url];
-                //发送数据
-                //测试打印多张图片
-                for(var i = 0; i < 1; i++){
-                    for(var j = 0; j < urlArr.length; j++){
-                        sendData.data = urlArr[j]; 
-                        ws.send(JSON.stringify(sendData));
-                    }
-                }
-            });
+//服务地址“ws://localhost:port/PrinterService” ，port值是启动打印服务时设置的端口值
+var ws;
+function connectWebSocket() {
+    //实例化WebSocket对象
+    ws = new WebSocket($("#uri").val());
+    //连接成功建立后响应
+    ws.onopen = function () {
+        log("成功连接到" + $("#uri").val());
+    }
+    //收到服务器消息后响应
+    ws.onmessage = function (event) {
+        log("收到服务器消息:"+event.data);
+        var ret = JSON.parse(event.data);
+        if (ret.code != 0)
+            log("异常：" + ret.msg);
+        else
+            log("打印成功，后续需要回调打印成功接口");
+    }
+    //连接关闭后响应
+    ws.onclose = function () {
+        log("关闭连接");
+        $("#disconnect").attr({ "disabled": "disabled" });
+        $("#uri").removeAttr("disabled");
+        $("#connect").removeAttr("disabled");
+        ws = null;
+    }
+    return false;
+}
+//发生信息到webSocket服务器进行通信
+$("#printPdfByUrl").click(function () {
+    if (!ws || ws.readyState !== 1) {
+        alert('请先连接服务');
+        return false;
+    }
+    var url = $('#pdfUrl').val();
+    var data = url;
+    var sendData = {
+        file_type: "pdf",
+        print_type: "filePath",
+        event_type: "print",
+        data: data
+    };
+
+    var urlArr = [url];
+    //发送数据
+    //测试打印多张图片
+    for(var i = 0; i < 1; i++){
+        for(var j = 0; j < urlArr.length; j++){
+            sendData.data = urlArr[j]; 
+            ws.send(JSON.stringify(sendData));
+        }
+    }
+});
 
 ```
 
@@ -373,20 +374,6 @@ public static void Pdf2Jpg(PdfiumViewer.PdfDocument pdfDocument, string targetPa
 
             }
         }
-        //图片拼接
-        //MergerImage(imageDir, targetPath);
-        /*
-                try
-                {
-                    //删除文件夹
-                    Directory.Delete(imageDir, true);
-                }
-                catch (Exception ex)
-                {
-                    //Send(string.Format("删除临时目录出错：{0};其他错误信息：{1}", imageDir, ex));
-                    throw new ArgumentNullException(string.Format("删除临时目录出错：{0};其他错误信息：{1}", imageDir, ex));
-                }
-                 * */
     }
 }
 

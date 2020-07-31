@@ -175,7 +175,6 @@ namespace PrintControl.Utils
         public static void MergerImage(string imageDir, string targetPath)
         {
             //var imageList = Directory.GetFiles(imageDir).OrderBy(f => f).Select(file => new Bitmap(file)).ToList();
-
             IList<Image> imageList = new List<Image>();
             //var imgs = Directory.GetFiles(imageDir);
             foreach (var file in Directory.GetFiles(imageDir))
@@ -216,7 +215,6 @@ namespace PrintControl.Utils
         public static Image MergerImage(string imageDir)
         {
             //var imageList = Directory.GetFiles(imageDir).OrderBy(f => f).Select(file => new Bitmap(file)).ToList();
-
             IList<Image> imageList = new List<Image>();
             //var imgs = Directory.GetFiles(imageDir);
             foreach (var file in Directory.GetFiles(imageDir))
