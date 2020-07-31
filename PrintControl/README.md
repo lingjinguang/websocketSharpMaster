@@ -1,4 +1,4 @@
-**PrintControl项目**：基于websocket-shap（https://github.com/sta/websocket-sharp）开源项目开发，适配于xp系统。
+﻿**PrintControl项目**：基于websocket-shap（https://github.com/sta/websocket-sharp）开源项目开发，适配于xp系统。
 
 **项目结构图**
 
@@ -57,7 +57,7 @@ private void StartService(bool isInit)
 }
 ```
 
-**前端连接webSocket服务**
+**前端连接webSocket服务**（请参考PrintControl>Test>Print.html 测试用例）
 
 ```js
 //服务地址“ws://localhost:port/PrinterService” ，port值是启动打印服务时设置的端口值
@@ -81,38 +81,27 @@ function connectWebSocket() {
     //连接关闭后响应
     ws.onclose = function () {
         log("关闭连接");
-        $("#disconnect").attr({ "disabled": "disabled" });
-        $("#uri").removeAttr("disabled");
-        $("#connect").removeAttr("disabled");
         ws = null;
     }
     return false;
 }
-//发生信息到webSocket服务器进行通信
-$("#printPdfByUrl").click(function () {
+
+//发送信息到webSocket服务器进行通信
+function preview (sendData){
     if (!ws || ws.readyState !== 1) {
         alert('请先连接服务');
         return false;
     }
-    var url = $('#pdfUrl').val();
-    var data = url;
-    var sendData = {
-        file_type: "pdf",
-        print_type: "filePath",
-        event_type: "print",
-        data: data
-    };
-
-    var urlArr = [url];
     //发送数据
-    //测试打印多张图片
-    for(var i = 0; i < 1; i++){
-        for(var j = 0; j < urlArr.length; j++){
-            sendData.data = urlArr[j]; 
-            ws.send(JSON.stringify(sendData));
-        }
-    }
-});
+    ws.send(JSON.stringify(sendData));
+}
+var sendData = {
+    file_type: "pdf",
+    print_type: "filePath",
+    event_type: "preview",
+    data: $('#pdfUrl').val()
+};
+preview(sendData);
 
 ```
 
@@ -120,17 +109,16 @@ $("#printPdfByUrl").click(function () {
 
 ```js
 var sendData = {
-    file_type: "pdf",//jpg、html、pdf 三种文件类型
-    print_type: "filePath",//filePath、Base64 二种打印数据来源方式类型
-    event_type: "print",//这个其他类型暂时没用
-    data: data
+    file_type: "pdf",	//jpg、html、pdf 三种文件类型
+    print_type: "filePath",	//filePath、Base64 二种打印数据来源方式类型
+    event_type: "print",	//print、preview分别是打印、打印预览
+    data: data	//data可以是url字符串或者图片转成base64的字符串
 };
 ```
 
 **后端响应前端的send事件**（OnMessage）
 
 ```c#
-
 /// <summary>
 /// 客户端发送send请求会被触发，接收请求数据
 /// </summary>
@@ -139,62 +127,80 @@ protected override void OnMessage(MessageEventArgs e)
     String result = "打印成功！";
     try
     {
-        string dataStr = e.Data;
-        var data = JsonHelper.DeserializeJsonToObject<MessageEvent<String>>(e.Data);
+        MessageEvent<String> data = JsonHelper.DeserializeJsonToObject<MessageEvent<String>>(e.Data);
+        string eventType = Convert.ToString(data.event_type).ToUpper();
+        string printType = Convert.ToString(data.print_type).ToUpper();
+        string folderName = Guid.NewGuid().ToString();  //pdf转图片所存放的文件夹名称
+        string tempDir = Path.Combine(Directory.GetCurrentDirectory(), "tempImg");  //生成图片临时存放文件夹
+        string tempImageDir = Path.Combine(tempDir, folderName);
+        //string targetPath = Path.Combine(tempDir, fileName + ".jpg");
+
         switch (Convert.ToString(data.file_type).ToUpper())
         {
             case "JPG":
-                PrintImage(Convert.ToString(data.data), Convert.ToString(data.print_type).ToUpper());
+                if (eventType == "PRINT")
+                {
+                    result = PrintUtils.PrintImage(Convert.ToString(data.data), printType);
+                }
+                else if (eventType == "PREVIEW")
+                {
+                    result = printType == "FILEPATH" ? PrintUtils.PreView(Convert.ToString(data.data), eventType) : PrintUtils.PreViewByBase64(Convert.ToString(data.data), eventType);
+                }
                 break;
             case "TXT":
-                PrintTxt(Convert.ToString(data.data), Convert.ToString(data.print_type).ToUpper());
+                PrintUtils.PrintTxt(Convert.ToString(data.data), printType);
                 break;
-            case "PDF":                     
-                string tempDir = Path.Combine(Directory.GetCurrentDirectory(), "tempImg"); 
-                string fileName = Path.GetFileNameWithoutExtension(data.data); //通过完整路径取得pdf文件爱你名称作为jpg的文件名
-                string jpgFile = Path.Combine(tempDir, fileName + ".jpg");
-                string pdfFile = Convert.ToString(data.data);
-                string folderName = Guid.NewGuid().ToString();
-                string imageDir = Path.Combine(tempDir, folderName);
-                Pdf2JpgUtils.Pdf2Jpg(pdfFile, jpgFile, null, folderName);
-                foreach (var file in Directory.GetFiles(imageDir))
+            case "PDF":
+                string fileName = Path.GetFileNameWithoutExtension(data.data);  //通过完整路径取得pdf文件名称作为jpg的文件名
+                Pdf2JpgUtils.Pdf2Jpg(Convert.ToString(data.data), Path.Combine(tempDir, fileName + ".jpg"), null, folderName);
+                if (eventType == "PRINT")
                 {
-                    PrintImage(file, Convert.ToString(data.print_type).ToUpper());
+                    foreach (var file in Directory.GetFiles(tempImageDir))
+                    {
+                        result = PrintUtils.PrintImage(file, printType);
+                    }
+                    try
+                    {
+                        //删除文件夹
+                        Directory.Delete(tempImageDir, true);
+                    }
+                    catch (Exception ex)
+                    {
+                        result = string.Format("删除临时目录出错：{0};其他错误信息：{1}", tempImageDir, ex);
+                    }
                 }
-
-                try
+                else if (eventType == "PREVIEW")
                 {
-                    //删除文件夹
-                    Directory.Delete(imageDir, true);
-                }
-                catch (Exception ex)
-                {
-                    result = string.Format("删除临时目录出错：{0};其他错误信息：{1}", imageDir, ex);
+                    result = PrintUtils.PreView(tempImageDir, eventType);
                 }
                 break;
             case "HTML":
                 string tempPdf = Path.Combine(Directory.GetCurrentDirectory(), "tempPdf");
-                string folderName2 = Guid.NewGuid().ToString();
-                string tempPdfDir = Path.Combine(tempPdf, folderName2);
+                string tempPdfDir = Path.Combine(tempPdf, folderName);
                 Directory.CreateDirectory(tempPdfDir);
                 string tempPdfPath = Path.Combine(tempPdfDir, "Html2Pdf.pdf");
                 Html2PdfUtils.Html2Pdf(Convert.ToString(data.data).Trim(), tempPdfPath);
-
-                string imageDir2 = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "tempImg"), folderName2);
-                Pdf2JpgUtils.Pdf2Jpg(tempPdfPath, Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "tempImg"), "Html2Pdf.jpg"), null, folderName2);
-                foreach (var file in Directory.GetFiles(imageDir2))
+                Pdf2JpgUtils.Pdf2Jpg(tempPdfPath, Path.Combine(tempDir, "Html2Pdf.jpg"), null, folderName);
+                if (eventType == "PRINT")
                 {
-                    PrintImage(file, Convert.ToString(data.print_type).ToUpper());
+                    foreach (var file in Directory.GetFiles(tempImageDir))
+                    {
+                        result = PrintUtils.PrintImage(file, printType);
+                    }
+                    try
+                    {
+                        //删除临时文件夹
+                        Directory.Delete(tempImageDir, true);
+                        Directory.Delete(tempPdfDir, true);
+                    }
+                    catch (Exception ex)
+                    {
+                        result = string.Format("删除临时目录出错：{0};其他错误信息：{1}", tempPdfDir, ex);
+                    }
                 }
-                try
+                else if (eventType == "PREVIEW")
                 {
-                    //删除文件夹
-                    Directory.Delete(imageDir2, true);
-                    Directory.Delete(tempPdfDir, true);
-                }
-                catch (Exception ex)
-                {
-                    result = string.Format("删除临时目录出错：{0};其他错误信息：{1}", tempPdfDir, ex);
+                    result = PrintUtils.PreView(tempImageDir, eventType);
                 }
                 break;
             default:
@@ -208,7 +214,6 @@ protected override void OnMessage(MessageEventArgs e)
     }
     Send(result);
 }
-
 ```
 
 **JPG打印**
@@ -256,13 +261,6 @@ public BaseResult PrintImage(string data, string print_type)
                 imgWidth = (int)((double)image.Width / (double)image.Height * imgHeight - margin * 2);
             }
             e.Graphics.DrawImage(image, margin, margin, imgWidth, imgHeight);
-
-            //e.Graphics.DrawImage(image数据, margin起始位置x, margin起始位置y, imgWidth, imgHeight);
-            //e.Graphics.DrawImage(image, m);
-            /* 小于等于4961*7016的正常
-                    Point loc = new Point(10, 10);
-                    e.Graphics.DrawImage(image, loc);
-                    */
         };
         //开始打印
         pd.Print();
@@ -275,22 +273,13 @@ public BaseResult PrintImage(string data, string print_type)
         return BaseResult.Error(e.Message);
     }
 }
-/// <summary>
-/// Base64转成Imgage数据类型
-/// </summary>
-private Image Base64ToImg(string base64str)
-{
-    byte[] arr = Convert.FromBase64String(base64str);
-    MemoryStream ms = new MemoryStream(arr);
-    Bitmap bmp = new Bitmap(ms);
-    return bmp;
-}
 ```
 
 **PDF打印（PDF转成JPG在通过PrintImage打印）**
 
 ```C#
-应用控件 PdfiumViewer处理pdf转成pdf文档
+//PdfiumViewer处理pdf文件转成Image类型数据
+//该程序集兼容xp参考 https://github.com/dlynine/katahiromz_pdfium
     
 public static void Pdf2Jpg(string sourcePath, string targetPath, int? pages, string folderName)
 {
@@ -376,14 +365,12 @@ public static void Pdf2Jpg(PdfiumViewer.PdfDocument pdfDocument, string targetPa
         }
     }
 }
-
-//var image = pdfDocument.Render(pages.Value, ConfigDefine.Pdf2JpgResolution, ConfigDefine.Pdf2JpgResolution, PdfiumViewer.PdfRenderFlags.CorrectFromDpi)
-pdf转成Image类型数据，接下来进行
 ```
 
 **HTML打印（HTML转PDF转图片打印）**
 
 ```C#
+//iTextSharp将HTML转成PDF，PDF再由Pdf2Jpg方法（PdfiumViewer）转成Image数据类型
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System;
