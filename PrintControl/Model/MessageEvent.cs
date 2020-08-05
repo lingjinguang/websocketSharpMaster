@@ -14,15 +14,27 @@ namespace PrintControl.Model
         /// <summary>
         /// 事件类型
         /// </summary>
-        public string event_type { get; set; }
+        public string eventType { get; set; }
         /// <summary>
         /// 打印类型
         /// </summary>
-        public string print_type { get; set; }
+        public string printType { get; set; }
         /// <summary>
         /// 文件类型
         /// </summary>
-        public string file_type { get; set; }
+        public string fileType { get; set; }
+        /// <summary>
+        /// 打印机名称
+        /// </summary>
+        public string printerName { get; set; }
+        /// <summary>
+        /// 打印纸张名称
+        /// </summary>
+        public string paperName { get; set; }
+        /// <summary>
+        /// 打印方向
+        /// </summary>
+        public string direction { get; set; }
         
         /// <summary>
         /// 传输数据

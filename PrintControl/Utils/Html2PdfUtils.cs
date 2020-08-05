@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Drawing.Printing;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.tool.xml;
@@ -10,14 +11,22 @@ namespace PrintControl.Utils
 {
     public static class Html2PdfUtils // : System.Web.UI.Page
     {
-        public static void Html2Pdf(string htmlText, string tempPdfPath)
+        public static void Html2Pdf(string htmlText, string tempPdfPath, string paperName,string direction)
         {
             if (string.IsNullOrEmpty(htmlText))
                 throw new Exception("传入的html无内容：" + htmlText);
             MemoryStream outputStream = new MemoryStream(); //实例化MemoryStream，用于存PDF 
             byte[] data = Encoding.UTF8.GetBytes(htmlText); //字串转成byte[]
             MemoryStream msInput = new MemoryStream(data);
-            Document doc = new Document();  //要写PDF的文件，建构子没填的话预设直式A4
+            paperName = paperName ?? "A4";
+            int width = 0, height = 0;
+            PrintUtils.getPaperSize(paperName, ref width, ref height);
+            Rectangle pageSize = new Rectangle(width, height);  //设置pdf模板大小
+            if (direction == "2") //2：横向打印
+            {
+                pageSize = new Rectangle(height, width);
+            }
+            Document doc = new Document(pageSize);  //要写PDF的文件 document = new Document(PageSize.A4, 25, 25, 30, 30);
             PdfWriter writer = PdfWriter.GetInstance(doc, outputStream);
             //指定文件预设开档时的缩放为100%
             PdfDestination pdfDest = new PdfDestination(PdfDestination.XYZ, 0, doc.PageSize.Height, 1f);

@@ -416,7 +416,7 @@
         #endregion
 
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ComboBox comboBox1;
+        public System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label2;
@@ -431,7 +431,7 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox txt_port;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label lab_defualtPrinterName;
+        public System.Windows.Forms.Label lab_defualtPrinterName;
         private System.Windows.Forms.LinkLabel link_Refresh;
         private System.Windows.Forms.Label lab_ServiceState;
         private System.Windows.Forms.Label label5;

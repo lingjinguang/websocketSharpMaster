@@ -68,7 +68,7 @@
         var ws;
         $(function () {
             var sendData = {
-                event_type: "scanning",
+                eventType: "scanning",
                 data: {
                     operate: "open"
                 }
@@ -124,6 +124,24 @@
             }
         
         }
+        function getPrinterName(sendData,cycles){
+            if (!ws || ws.readyState !== 1) {
+                alert('请先连接服务');
+                return false;
+            }
+            //发送数据
+            //测试打印多张图片
+            for (var i = 0; i < cycles; i++) {
+                ws.send(JSON.stringify(sendData));
+            }
+        }
+        function getPageSizeName(){
+            if (!ws || ws.readyState !== 1) {
+                alert('请先连接服务');
+                return false;
+            }
+        
+        }
         //发送字符串消息
         $(function () {
 
@@ -149,9 +167,12 @@
                 var temp = $('#temp').val();
                 var data = temp;
                 var sendData = {
-                    file_type: "jpg", //图片（其它格式）都是“jpg”类型
-                    print_type: "Base64",
-                    event_type: "print",
+                    fileType: "jpg", //图片（其它格式）都是“jpg”类型
+                    printType: "Base64",
+                    eventType: "print",
+                    direction:  $("#Direction").val(),
+                    printerName: $("#printerNames").val(),  
+                    paperName: $("#paperNames").val(),  
                     data: data
                 };
                 //发送数据
@@ -162,9 +183,12 @@
             });
             $("#preViewBase64").click(function () {
                 var sendData = {
-                    file_type: "jpg", //图片（其它格式）都是“jpg”类型
-                    print_type: "Base64",
-                    event_type: "preview",
+                    fileType: "jpg", //图片（其它格式）都是“jpg”类型
+                    printType: "Base64",
+                    eventType: "preview",
+                    direction:  $("#Direction").val(),
+                    printerName: $("#printerNames").val(),  
+                    paperName: $("#paperNames").val(),  
                     data: $('#temp').val()
                 };
                 preview(sendData,1);
@@ -177,13 +201,16 @@
                 var url = $('#picUrl').val();
                 var data = url;
                 var sendData = {
-                    file_type: "jpg",
-                    print_type: "filePath",
-                    event_type: "print",
+                    fileType: "jpg",
+                    printType: "filePath",
+                    eventType: "print",
+                    direction:  $("#Direction").val(),
+                    printerName: $("#printerNames").val(),  
+                    paperName: $("#paperNames").val(),  
                     data: data
                 };
-                
-                var urlArr = [$('#picUrl').val(),$('#picUrl2').val(),$('#picUrl3').val()];
+                //,$('#picUrl2').val(),$('#picUrl3').val()
+                var urlArr = [$('#picUrl').val()];
                 //发送数据
                 //测试打印多张图片
                 for(var i = 0;i<1;i++){
@@ -195,9 +222,12 @@
             });
             $("#preViewUrl").click(function () {
                 var sendData = {
-                    file_type: "jpg", //图片（其它格式）都是“jpg”类型
-                    print_type: "filePath",
-                    event_type: "preview",
+                    fileType: "jpg", //图片（其它格式）都是“jpg”类型
+                    printType: "filePath",
+                    eventType: "preview",
+                    direction:  $("#Direction").val(),
+                    printerName: $("#printerNames").val(),  
+                    paperName: $("#paperNames").val(),  
                     data: $('#picUrl').val()
                 };
                 preview(sendData,1);
@@ -210,9 +240,12 @@
                 var url = $('#pdfUrl').val();
                 var data = url;
                 var sendData = {
-                    file_type: "pdf",
-                    print_type: "filePath",
-                    event_type: "print",
+                    fileType: "pdf",
+                    printType: "filePath",
+                    eventType: "print",
+                    direction:  $("#Direction").val(),
+                    printerName: $("#printerNames").val(),  
+                    paperName: $("#paperNames").val(),  
                     data: data
                 };
                 
@@ -228,9 +261,12 @@
             });
             $("#preViewPdfByUrl").click(function () {
                 var sendData = {
-                    file_type: "pdf",
-                    print_type: "filePath",
-                    event_type: "preview",
+                    fileType: "pdf",
+                    printType: "filePath",
+                    eventType: "preview",
+                    direction:  $("#Direction").val(),
+                    printerName: $("#printerNames").val(),  
+                    paperName: $("#paperNames").val(), 
                     data: $('#pdfUrl').val()
                 };
                 preview(sendData,1);
@@ -248,9 +284,12 @@
                 var url = $('#pdfUrl').val();
                 var data = innerHtml;
                 var sendData = {
-                    file_type: "html",
-                    print_type: "filePath",
-                    event_type: "print",
+                    fileType: "html",
+                    printType: "filePath",
+                    eventType: "print",
+                    direction:  $("#Direction").val(),
+                    printerName: $("#printerNames").val(),  
+                    paperName: $("#paperNames").val(),  
                     data: data
                 };
                 
@@ -266,14 +305,74 @@
             });
             $("#preViewHtml").click(function () {
                 var sendData = {
-                    file_type: "html",
-                    print_type: "filePath",
-                    event_type: "preview",
+                    fileType: "html",
+                    printType: "filePath",
+                    eventType: "preview",
+                    direction:  $("#Direction").val(),
+                    printerName: $("#printerNames").val(),  
+                    paperName: $("#paperNames").val(),   
                     data: $("#yhtcprediv").html()
                 };
                 preview(sendData,1);
             });
+            $("#getPrinterName").click(function () {
+                connect($("#uri").val(),"getPrinterName","");
+            });
+            $("#printerNames").change(function(){
+                connect($("#uri").val(),"getPageSizes",$(this).val());
+            });
         });
+        function connect(uri,type,printerName) {
+            var ws2 = new WebSocket(uri);
+            //连接成功建立后响应
+            ws2.onopen = function () {
+                log("成功连接到" + uri);
+            }
+            //收到服务器消息后响应
+            ws2.onmessage = function (event) {
+                log("收到服务器消息:"+event.data);
+                if(type=="getPrinterName"){
+                    addPrinterName(event.data);
+                }else{
+                    addPageSize(event.data);
+                }
+                ws2.close();
+                ws2 = null;
+            }
+            //连接关闭后响应
+            ws2.onclose = function () {
+                log("关闭连接");
+                ws2 = null;
+            }
+            var sendData = {
+                fileType: type,
+                printType: "",
+                eventType: type,
+                data: printerName
+            };
+            setTimeout(function(){
+                ws2.send(JSON.stringify(sendData));
+            },1000);
+        }
+        function addPrinterName(data){
+            var printerNames = data.split(',');
+            var options = "";
+            for (i = 0; i < printerNames.length; i++) {
+                options += '<option value="' + printerNames[i] + '" >' + printerNames[i] + '</option>';
+            }
+            $("#printerNames").html("");
+            $("#printerNames").append(options);
+        }
+        function addPageSize(data){
+            var paperNames = data.split(',');
+            var options = "";
+            for (i = 0; i < paperNames.length; i++) {
+                options += '<option value="' + paperNames[i] + '" >' + paperNames[i] + '</option>';
+            }
+            $("#paperNames").html("");
+            $("#paperNames").append(options);
+        }
+
 
 
 
@@ -309,6 +408,13 @@
     <input type="button" id="reset" value="清空消息框" />
     <input type="button" id="printHtml" value="打印HTML">
     <input type="button" id="preViewHtml" value="打印预览HTML">
+    <input type="button" id="getPrinterName" value="获取打印机">
+    <select id="printerNames"></select>
+    <select id="paperNames"></select>
+    <select class="printDirection printTextDirection" id="Direction" title="方向" style="height: 24px;width: 72px;">
+        <option value="1">纵向</option>
+        <option value="2">横向</option>
+    </select>
     <form>
         <textarea id="log" rows="30" cols="100"
                   style="height:30px;font-family: monospace; color: red;"></textarea>
@@ -317,8 +423,8 @@
     <div class="introBox section package boxBg02" id="yhtcprediv">
         <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table-grid table-text-grid">
             
-            <tr><td colspan="11" class="item-content-title" style="height:30px;padding-top: 10px;padding-bottom: 10px;">检查护送单</td></tr>
-            <tr><td  class="item-title" style="height:30px;border: 1px solid #000;height:30px;font-weight:bold;">年龄</td><td  class="item-title" style="height:30px;border: 1px solid #000;height:30px;font-weight:bold;">机房</td><td  class="item-title" style="height:30px;border: 1px solid #000;height:30px;font-weight:bold;">出生日期</td><td  class="item-title" style="height:30px;border: 1px solid #000;height:30px;font-weight:bold;">预约时间</td><td  class="item-title" style="height:30px;border: 1px solid #000;height:30px;font-weight:bold;">排队号</td></tr>
+            <tr><td colspan="11" class="item-content-title" style="height:30px;padding-top: 10px;padding-bottom: 10px;font-size:20px;font-weight:bold;text-align:center;">检查护送单</td></tr>
+            <tr><td class="item-title" style="height:30px;border: 1px solid #000;height:30px;font-weight:bold;">年龄</td><td  class="item-title" style="height:30px;border: 1px solid #000;height:30px;font-weight:bold;">机房</td><td  class="item-title" style="height:30px;border: 1px solid #000;height:30px;font-weight:bold;">出生日期</td><td  class="item-title" style="height:30px;border: 1px solid #000;height:30px;font-weight:bold;">预约时间</td><td  class="item-title" style="height:30px;border: 1px solid #000;height:30px;font-weight:bold;">排队号</td></tr>
             <tr><td class="item-content" style="height:30px;border: 1px solid #000;height:30px;color:red;">岁</td><td class="item-content" style="height:30px;border: 1px solid #000;height:30px;font-size:20px;">普通彩超</td><td class="item-content" style="height:30px;border: 1px solid #000;height:30px;"></td><td class="item-content" style="height:30px;border: 1px solid #000;height:30px;">09:00-09:30</td><td class="item-content" style="height:30px;border: 1px solid #000;height:30px;">36</td></tr>
             <tr><td class="item-content" style="height:30px;border: 1px solid #000;height:30px;color:red;">岁</td><td class="item-content" style="height:30px;border: 1px solid #000;height:30px;">B超机房</td><td class="item-content" style="height:30px;border: 1px solid #000;height:30px;"></td><td class="item-content" style="height:30px;border: 1px solid #000;height:30px;">09:00-09:30</td><td class="item-content" style="height:30px;border: 1px solid #000;height:30px;">12</td></tr>
             <tr><td class="item-content" style="height:30px;border: 1px solid #000;height:30px;">岁</td><td class="item-content" style="height:30px;border: 1px solid #000;height:30px;">B超机房</td><td class="item-content" style="height:30px;border: 1px solid #000;height:30px;"></td><td class="item-content" style="height:30px;border: 1px solid #000;height:30px;">10:00-10:30</td><td class="item-content" style="height:30px;border: 1px solid #000;height:30px;">28</td></tr>
